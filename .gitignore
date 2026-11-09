@@ -1,0 +1,80 @@
+
+# ==========================================
+# ORA DIGITAL PLATFORM - GIT IGNORE
+# ==========================================
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Node.js dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+coverage/
+.turbo/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Operating system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+.cache/
+*.tmp
+
+# Testing artifacts
+playwright-report/
+test-results/
+
+# Docker local overrides
+docker-compose.override.yaml
+compose.override.yaml
+
+# Database backups and local data
+*.sql
+*.dump
+*.bak
+backups/
+database-data/
+
+# Certificates and private keys
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python artifacts (future services/tools)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local infrastructure data
+postgres_data/
+rabbitmq_data/
+
+# Uploaded manuscripts and proofs
+services/journal-service/uploads/

@@ -1,0 +1,109 @@
+
+name: ora-platform
+
+services:
+
+  # ==========================================
+  # POSTGRESQL 17 DATABASE
+  # ==========================================
+  postgres:
+    image: postgres:17
+    container_name: ora-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:-ora_platform}
+
+    ports:
+      - "127.0.0.1:5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+    networks:
+      - ora-network
+
+    mem_limit: 1g
+
+  # ==========================================
+  # RABBITMQ 4 MANAGEMENT
+  # ==========================================
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: ora-rabbitmq
+    hostname: ora-rabbitmq
+    restart: unless-stopped
+
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?RABBITMQ_USER is required}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?RABBITMQ_PASSWORD is required}
+
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+    healthcheck:
+      test:
+        - CMD
+        - rabbitmq-diagnostics
+        - -q
+        - ping
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+    networks:
+      - ora-network
+
+    mem_limit: 1g
+
+  # ==========================================
+  # MAILPIT (development mail catcher)
+  # SMTP: localhost:1025  |  Inbox UI: http://localhost:8025
+  # ==========================================
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ora-mailpit
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+
+    networks:
+      - ora-network
+
+    mem_limit: 256m
+
+# ==========================================
+# PERSISTENT STORAGE
+# ==========================================
+volumes:
+  postgres_data:
+    name: ora-platform-postgres-data
+
+  rabbitmq_data:
+    name: ora-platform-rabbitmq-data
+
+# ==========================================
+# INTERNAL NETWORK
+# ==========================================
+networks:
+  ora-network:
+    name: ora-platform-network
+    driver: bridge

@@ -1,0 +1,39 @@
+{
+  "name": "journal-service",
+  "version": "1.0.0",
+  "description": "Journal Management System (JMS) microservice for the Oromo Research Association Digital Platform.",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "test:smoke": "node tests/jms.smoke.mjs",
+    "seed": "node scripts/seed.mjs",
+    "seed:demo": "node scripts/seed-demo.mjs"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.45.2",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.2",
+    "helmet": "^8.3.0",
+    "jose": "^6.2.14",
+    "multer": "^2.0.2",
+    "nodemailer": "^10.3.1",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^26.6.6",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
